@@ -1,7 +1,0 @@
-; qrgp.def : Declares the module parameters for the DLL.
-
-LIBRARY      "qrgp"
-DESCRIPTION  'qrgp Windows Dynamic Link Library'
-
-EXPORTS
-    vm_entry @1
