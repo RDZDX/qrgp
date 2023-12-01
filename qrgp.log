@@ -1,0 +1,13 @@
+"C:\Program Files\MRE SDK V3.0.00\include\vmsys.h", line 214: Warning: C2220W: Superfluous ',' in 'enum' declaration
+"C:\Program Files\MRE SDK V3.0.00\include\vmio.h", line 1801: Warning: C2220W: Superfluous ',' in 'enum' declaration
+"d:\MyGitHub\qrgp\qrgp.c", line 113: Serious error: C2292E: typedef name 'uint8_t' used in expression context
+"d:\MyGitHub\qrgp\qrgp.c", line 113: Serious error: C2284E: expected ';' after command - inserted before 'x'
+"d:\MyGitHub\qrgp\qrgp.c", line 113: Error: C2456E: undeclared name, inventing 'extern int x'
+"d:\MyGitHub\qrgp\qrgp.c", line 114: Serious error: C2292E: typedef name 'uint8_t' used in expression context
+"d:\MyGitHub\qrgp\qrgp.c", line 114: Serious error: C2284E: expected ';' after command - inserted before 'y'
+"d:\MyGitHub\qrgp\qrgp.c", line 114: Error: C2456E: undeclared name, inventing 'extern int y'
+"d:\MyGitHub\qrgp\qrgp.c", line 133: Warning: C2870W: variable 'old_qrcodeData' declared but not used
+"d:\MyGitHub\qrgp\qrgp.c", line 133: Warning: C2870W: variable 'old_qrcode' declared but not used
+"d:\MyGitHub\qrgp\qrgp.c", line 178: Warning: C2870W: variable 'newName' declared but not used
+"d:\MyGitHub\qrgp\qrgp.c", line 212: Error: C3028E: <argument 3 to 'vm_chset_convert'>: implicit cast of pointer to non-equal pointer
+d:\MyGitHub\qrgp\qrgp.c: 5 warnings, 3 errors, 4 serious errors
