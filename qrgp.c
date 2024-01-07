@@ -109,6 +109,10 @@ void handle_keyevt(VMINT event, VMINT keycode) {
     if (event == VM_KEY_EVENT_UP && keycode == VM_KEY_NUM2) {
        screenshot();
     }
+
+    if (event == VM_KEY_EVENT_UP && keycode == VM_KEY_NUM3) {
+       screenshot1();
+    }
  
 }
 
@@ -564,6 +568,9 @@ void mre_draw_black_rectangle(void) {
 
 unsigned char* createBitmapFileHeader(int fileSize) {
 
+    //const int FILE_HEADER_SIZE = 14;
+    //const int INFO_HEADER_SIZE = 40;
+
     // int fileSize = FILE_HEADER_SIZE + INFO_HEADER_SIZE + (stride * height);
 
     static unsigned char fileHeader[] = {
@@ -585,6 +592,9 @@ unsigned char* createBitmapFileHeader(int fileSize) {
 }
 
 unsigned char* createBitmapInfoHeader(int height, int width) {
+
+    //const int INFO_HEADER_SIZE = 40;
+    //const int BYTES_PER_PIXEL = 3;
 
     static unsigned char infoHeader[] = {
         0, 0, 0, 0,  /// header size
@@ -617,7 +627,10 @@ unsigned char* createBitmapInfoHeader(int height, int width) {
 
 int screenshot(void) {
 
-    VMFILE f;
+    //const int FILE_HEADER_SIZE = 14;
+    //const int INFO_HEADER_SIZE = 40;
+    //VMFILE f_read;
+
     VMWCHAR s[100];
     VMWCHAR e[100];
     char ss[100];
@@ -628,18 +641,67 @@ int screenshot(void) {
     create_auto_filename(e, "bmp");
     create_auto_full_path_name(s, e);
 
-    f = vm_file_open((VMWSTR)s, MODE_CREATE_ALWAYS_WRITE, 1);
+    f_read = vm_file_open((VMWSTR)s, MODE_CREATE_ALWAYS_WRITE, 1);
     int w = vm_graphic_get_screen_width(), h = vm_graphic_get_screen_height();
 
-    vm_file_write(f, createBitmapFileHeader(FILE_HEADER_SIZE + INFO_HEADER_SIZE + vm_graphic_get_screen_width() * vm_graphic_get_screen_height() * 3), FILE_HEADER_SIZE, &p);
-    vm_file_write(f, createBitmapInfoHeader(vm_graphic_get_screen_height(), vm_graphic_get_screen_width()), INFO_HEADER_SIZE, &p);
+    vm_file_write(f_read, createBitmapFileHeader(FILE_HEADER_SIZE + INFO_HEADER_SIZE + vm_graphic_get_screen_width() * vm_graphic_get_screen_height() * 3), FILE_HEADER_SIZE, &p);
+    vm_file_write(f_read, createBitmapInfoHeader(vm_graphic_get_screen_height(), vm_graphic_get_screen_width()), INFO_HEADER_SIZE, &p);
 
     for (i = h - 1; i > -1; --i) {
         for (j = 0; j < w; ++j) {
             long long tmp =  VM_COLOR_565_TO_888(((unsigned short*)buffer)[i * w + j]);
-            vm_file_write(f, &tmp, 3, &p);
+            vm_file_write(f_read, &tmp, 3, &p);
         }
     }
-    vm_file_close(f);
+    vm_file_close(f_read);
+    return 0;
+}
+
+int screenshot1(void) {
+
+    VMWCHAR s[100];
+    VMWCHAR e[100];
+    char ss[100];
+    int i, j, q, w, h;
+    VMUINT p;
+
+    //const int FILE_HEADER_SIZE = 14;
+    //const int INFO_HEADER_SIZE = 40;
+    //VMFILE f_read;
+    //VMUINT8 *buffer;
+
+    create_auto_filename(e, "bmp");
+    create_auto_full_path_name(s, e);
+
+    f_read = vm_file_open((VMWSTR)s, MODE_CREATE_ALWAYS_WRITE, 1);
+    w = vm_graphic_get_screen_width();
+    h = vm_graphic_get_screen_height();
+
+    vm_file_write(f_read, createBitmapFileHeader(FILE_HEADER_SIZE + INFO_HEADER_SIZE + vm_graphic_get_screen_width() * vm_graphic_get_screen_height() * 3), FILE_HEADER_SIZE, &p);
+    vm_file_write(f_read, createBitmapInfoHeader(vm_graphic_get_screen_height(), vm_graphic_get_screen_width()), INFO_HEADER_SIZE, &p);
+
+    // static unsigned char *temp_line_buf = vm_malloc(w * 3);
+    unsigned char *temp_line_buf = vm_malloc(w * 3);
+
+    for (i = h - 1; i > -1; --i) {
+
+        for (j = 0; j < w; ++j) {
+
+            unsigned long tmp = VM_COLOR_565_TO_888(((unsigned short *)buffer)[i * w + j]);
+            unsigned char *tmp_b = (unsigned char *)&tmp;
+
+            for (q = 0; q < 3; ++q) {
+
+                temp_line_buf[j * 3 + q] = tmp_b[q];
+            }
+        }
+        vm_file_write(f_read, &temp_line_buf, w * 3, &p);
+    }
+
+    vm_file_close(f_read);
+
+    vm_free(temp_line_buf);
+    temp_line_buf = NULL;
+
     return 0;
 }
