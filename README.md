@@ -3,4 +3,4 @@ Basic app to generate QR code for MRE platform mobile phone (including Nokia S30
 For using with Nokia mobile phone, app must be signed with IMSI (your SIM card) code. 
 https://vxpatch.luxferre.top/
 Application file - "[Qrgp.vxp](https://rdzdx.github.io/qrgp/Qrgp.vxp)".
-![alt text](https://rdzdx.github.io/qrgp/picture.jpg)
+
